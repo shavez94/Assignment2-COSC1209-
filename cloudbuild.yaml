@@ -1,22 +1,22 @@
 steps:
-  # Ensure working directory is set correctly
-  - name: "gcr.io/cloud-builders/git"
+  # Debugging: Print all fetched files
+  - name: "gcr.io/cloud-builders/gcloud"
     entrypoint: "bash"
     args:
       - "-c"
-      - "ls -l && pwd"  # This will output all files to confirm Dockerfile exists
+      - "ls -la /workspace && pwd"
 
-  # Build the Docker image
+  # Step 1: Build the Docker image
   - name: "gcr.io/cloud-builders/docker"
     args:
       - "build"
       - "-t"
       - "us-central1-docker.pkg.dev/$PROJECT_ID/firstname-studentid/app:$COMMIT_SHA"
       - "-f"
-      - "/workspace/Dockerfile"  # Explicit absolute path
-      - "."  # Correct build context
+      - "/workspace/Dockerfile"
+      - "."
 
-  # Push the image to Artifact Registry
+  # Step 2: Push the image to Artifact Registry
   - name: "gcr.io/cloud-builders/docker"
     args:
       - "push"
