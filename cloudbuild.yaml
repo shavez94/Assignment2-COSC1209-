@@ -6,7 +6,7 @@ steps:
       - "-t"
       - "us-central1-docker.pkg.dev/$PROJECT_ID/firstname-studentid/app:$COMMIT_SHA"
       - "-f"
-      - "Dockerfile" # Explicitly specify the Dockerfile
+      - './Dockerfile' 
       - "." # Ensure correct build context
 
   # Step 2: Push the image to Artifact Registry
