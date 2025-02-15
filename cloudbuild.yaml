@@ -12,7 +12,7 @@ steps:
       - "us-central1-docker.pkg.dev/$PROJECT_ID/firstname-studentid/app:$COMMIT_SHA"
 
 options:
-  logging: "REGIONAL_USER_OWNED_BUCKET"
+  logging: 'CLOUD_LOGGING_ONLY'
 
 substitutions:
   _SERVICE_NAME: "gcp-app"
