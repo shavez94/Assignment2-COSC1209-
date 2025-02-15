@@ -1,18 +1,19 @@
 steps:
-  - name: "gcr.io/cloud-builders/docker"
-    args:
-      - "build"
-      - "-t"
-      - "us-central1-docker.pkg.dev/$PROJECT_ID/firstname-studentid/app:$COMMIT_SHA"
-      - "."
+  # Step 1: Build the Docker image
+  - name: 'gcr.io/cloud-builders/docker'
+    args: 
+      - 'build'
+      - '-t'
+      - 'us-central1-docker.pkg.dev/$PROJECT_ID/firstname-studentid/app:$COMMIT_SHA'
+      - '-f'
+      - './Dockerfile'  # Ensure this points to the correct path
+      - '.'
 
-  - name: "gcr.io/cloud-builders/docker"
-    args:
-      - "push"
-      - "us-central1-docker.pkg.dev/$PROJECT_ID/firstname-studentid/app:$COMMIT_SHA"
+  # Step 2: Push the image to Artifact Registry
+  - name: 'gcr.io/cloud-builders/docker'
+    args: 
+      - 'push'
+      - 'us-central1-docker.pkg.dev/$PROJECT_ID/firstname-studentid/app:$COMMIT_SHA'
 
 options:
-  logging: 'CLOUD_LOGGING_ONLY'
-
-substitutions:
-  _SERVICE_NAME: "gcp-app"
+  logging: 'REGIONAL_USER_OWNED_BUCKET'
