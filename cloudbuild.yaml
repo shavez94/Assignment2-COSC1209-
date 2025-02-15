@@ -1,0 +1,41 @@
+steps:
+  # Step 1: Build the Docker image
+  - name: "gcr.io/cloud-builders/docker"
+    args:
+      - "build"
+      - "-t"
+      - "us-central1-docker.pkg.dev/$PROJECT_ID/firstname-studentid/app:$COMMIT_SHA"
+      - "-f"
+      - "Dockerfile" # Explicitly specify the Dockerfile
+      - "." # Ensure correct build context
+
+  # Step 2: Push the image to Artifact Registry
+  - name: "gcr.io/cloud-builders/docker"
+    args:
+      - "push"
+      - "us-central1-docker.pkg.dev/$PROJECT_ID/firstname-studentid/app:$COMMIT_SHA"
+
+  # Step 3: Deploy to Cloud Run
+  - name: "gcr.io/google.com/cloudsdktool/cloud-sdk"
+    entrypoint: gcloud
+    args:
+      - "run"
+      - "deploy"
+      - "gcp-app"
+      - "--image"
+      - "us-central1-docker.pkg.dev/$PROJECT_ID/firstname-studentid/app:$COMMIT_SHA"
+      - "--region"
+      - "us-central1"
+      - "--platform"
+      - "managed"
+      - "--allow-unauthenticated"
+
+options:
+  logging: "REGIONAL_USER_OWNED_BUCKET" # Ensures logs are stored in a dedicated bucket
+
+substitutions:
+  _SERVICE_NAME: "gcp-app"
+
+triggerTemplate:
+  projectId: "$PROJECT_ID"
+  branchName: "main"
