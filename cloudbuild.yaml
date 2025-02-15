@@ -16,7 +16,3 @@ options:
 
 substitutions:
   _SERVICE_NAME: "gcp-app"
-
-triggerTemplate:
-  projectId: "$PROJECT_ID"
-  branchName: "main"
